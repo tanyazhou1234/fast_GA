@@ -1,3 +1,7 @@
-*.dat
+
 /log
 /L_sound
+/sound
+*.txt
+
+

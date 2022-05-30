@@ -1,6 +1,6 @@
 function [value,generation]=point_ga(cnum,snum,tnum)
 
-trynum=tnum
+trynum=tnum;
 
 cpoint=cnum;    #抑圧制御点数
 set_num=snum;  #初期個体数（偶数のみ）
@@ -13,10 +13,9 @@ bix=-100;        #適合度の最大値
 count=0;      #終了条件のためのカウント変数
 
 mkdir("log");
-mkdir("arrangement");
-mkdir("graph");
 
-
+tic()
+printf("initial G:");
 ############初期集団作成#####################
 g=zeros(cpoint,3);		#ｘ座標、y座標、重み係数
 ii=-0.5:0.02:0.5;   #抑圧制御点のx軸範囲
@@ -33,25 +32,35 @@ g(:,2)=yy_ini(floor(rand(cpoint,1)*y_size)+1,1);   #制御点y軸設定
 g(:,3)=randi(1,1,cpoint); #重み係数1固定
 G{ii}=g;
 endfor
-
+toc()
+printf("\n");
 
 gnum=1; #世代数の変数
 semisin=0;
 
 ################第一世代評価###################
-tic()
+
 for cnt=1:set_num
 if gnum==1
 	xx=G{cnt}(:,[1]);       #x軸
 	yy=G{cnt}(:,[2]);       #y軸
 	weight=G{cnt}(:,[3]);   #重み係数
+	tic()
+	printf("MPCM %d: ",cnt );
 	mpcm(xx,yy,min_fs,max_fs,cpoint,weight);    #多点制御法フィルタ関数
+	toc()
+
+	tic()	
 	semisin=hyouka_zone(min_fs,max_fs);       #評価関数
+	printf("hyouka %d: ",cnt);
+	toc()
+	printf("\n");
+
 	semisin1_db(cnt)=semisin;           #評価関数からの返り値を収納
 	semisin1(cnt)=semisin;
 endif
 endfor
-toc()
+
 
 
 [x, ix] = max (semisin1);   #その世代の最大適合度を保存
@@ -60,15 +69,20 @@ max_db=semisin1_db(ix);
 
 ################ループ開始?##################
 while(1)
-gnum
+gnum;
 
 #save semisin1.dat semisin1 semisin1_db
 ###############ルーレット選択##################
+tic()
+printf("opt_roulette: ");
 newgene=opt_roulette(semisin1,set_num);       #semisin1の値に応じてルーレット選択
-
+toc()
+printf("\n");
+printf("\n");
 
 ###############交叉と突然変異　##################
-
+tic()
+printf("corssover & mutation for 40 chromosome (20 pairs): ");
 semisin1_temp=zeros(1,set_num);
 semisin1_db_temp=zeros(1,set_num);
 
@@ -146,9 +160,13 @@ for jj=1:2:set_num
 		C{jj+1} = h2;
 	endif
 endfor
+toc()
+printf("\n");
+printf("\n");
 #save semisin_temp.dat prob_temp semisin1_temp semisin1_db_temp
 
 ################次世代評価###################
+%{
 tic()
 for cnt=1:set_num
 #tic()
@@ -170,7 +188,7 @@ for cnt=1:set_num
 endfor
 toc()
 #save new_semisin.dat semisin1 semisin1_db
-
+%}
 [x, ix] = max (semisin1);   #その世代の最大適合度を保存
 max_ev=[max_ev,semisin1(ix)];
 max_db=[max_db,semisin1_db(ix)];
@@ -192,7 +210,7 @@ g_avg(gnum)=avg;
 g_med(gnum)=med;
 g_gnum(gnum)=gnum;
 
-
+G=C;
 #ログにファイルに変数出力
 cd log
 fname=sprintf("%d_G_%d.txt",trynum,gnum);
@@ -200,8 +218,8 @@ eval(['save ', fname, ' G ',' g_maximum ',' g_avg ',' g_med '])
 cd ..
 
 count
-if  count==15 || maximum==med #終了条件
-#if gnum==2
+#if  count==15 || maximum==med #終了条件
+if gnum==1
  break
 endif
 
@@ -210,7 +228,7 @@ gnum++;
 printf("\n");
 #freport()
 fclose("all");
-G=C;
+
 count=count+1;
 endwhile
 
@@ -224,9 +242,9 @@ eval(['save ', fname, ' G ',' maximum ',' avg ',' med ',' ix '])
 fname=sprintf("%d_G_%d_result.txt",trynum,gnum+1);
 eval(['save ', fname, ' max_ev ',' max_db ',' max_p '])
 
-xx=max_p(:,[1]);
-yy=max_p(:,[2]);
-weight=max_p(:,[3]);
-mpcm(xx,yy,min_fs,max_fs,cpoint,weight);
+#xx=max_p(:,[1]);
+#yy=max_p(:,[2]);
+#weight=max_p(:,[3]);
+#mpcm(xx,yy,min_fs,max_fs,cpoint,weight);
 
 endfunction

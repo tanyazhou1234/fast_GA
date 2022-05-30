@@ -3,6 +3,8 @@ function semisin = hyouka_zone(min_fs,max_fs)
 
 mkdir("sound");
 #音声ファイル読み込み
+#tic()
+#printf("hyouka: reading sound(form 32 loudspeakers): ")
 fname=sprintf("L_sound/sound1.raw");
 fpi1=fopen(fname,'r');
 fname=sprintf("L_sound/sound2.raw");
@@ -35,7 +37,9 @@ fname=sprintf("L_sound/sound15.raw");
 fpi15=fopen(fname,'r');
 fname=sprintf("L_sound/sound16.raw");
 fpi16=fopen(fname,'r');
-
+#toc()
+#printf("\n");
+#printf("\n");
 
 mnw=512;
 L=256;
@@ -54,7 +58,8 @@ dis_y1=0.25;
 
 dis_x0=0.25;#抑圧評価点のメッシュ間隔
 dis_y0=0.25;
-
+#tic()
+#printf("hyouka: make evaluation points: ");
 ########reproducted evaluation points####
 ii=0;
 %%%--1---2---%%left & right zones%%
@@ -110,9 +115,12 @@ endfor
 
 num_0=jj; #抑圧評価点数
 ###########################################
+#toc()
+#printf("\n");
+#printf("\n");
 
-
-
+#tic()
+#printf("再生評価点音圧生成: ");
 %%%%%再生評価点音圧の計算%%%%%
 for kk=1:num_1
 	xx=e_point_1(kk,1);
@@ -391,8 +399,12 @@ jj=1:L;
 	fclose(fpo);
 
 endfor
+#toc()
+#printf("\n");
+#printf("\n");
 
-
+#tic()
+#printf("抑圧評価点音圧の計算: ");
 %%%%%抑圧評価点音圧の計算%%%%%
 for kk=1:num_0
 
@@ -678,7 +690,9 @@ jj=1:L;
 	fclose(fpo);
 
 endfor
-
+#toc()
+#printf("\n");
+#printf("\n");
 
 
 
@@ -700,10 +714,11 @@ endfor
 	fclose(fpi16);
 
 
-	r_sum=0;
-	s_sum=0;
+r_sum=0;
+s_sum=0;
 
-
+#tic()
+#printf("calculating SPL & fitness costs ");
 for ii=1:num_1
 
 	xx=e_point_1(ii,1);
@@ -738,9 +753,10 @@ for jj=1:num_0
 endfor
 
 ave_s=s_sum/num_0;
-
-
-	semisin=ave_r/ave_s;  #再生エリアと抑圧エリアとの平均音圧差
+semisin=ave_r/ave_s;  #再生エリアと抑圧エリアとの平均音圧差
+#toc()
+#printf("\n");
+#printf("\n");
 
 #	fclose("all");
 #	freport()
