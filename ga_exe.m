@@ -1,7 +1,7 @@
 clear all
 
 cnum=36;  %抑圧点数
-snum=40;  %初期個体数
+snum=2;  %初期個体数
 fpoo=fopen("result.txt",'w');
 
 f=0.0;

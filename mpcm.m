@@ -1,7 +1,6 @@
 function mpcm(xx,yy,min_fs,max_fs,cpoint,weight)
 
-
-mkdir("L_sound");	%出力音声格納用
+mkdir("/dev/shm/L_sound");
 
 ##############初期値設定################
 sp_num = 16; 	%スピーカ数
@@ -130,7 +129,7 @@ fpi1=fopen(fname,'r');
 
 for jj=1:sp_num
 
-	fname=sprintf("L_sound/sound%d.raw",jj);
+	fname=sprintf("/dev/shm/L_sound/sound%d.raw",jj);
 	fo=fopen(fname,'w');
 	signal1=fread(fpi1,inf,'short');
 	signal2=fftfilt(H_time(:,jj),signal1);		%fftfiltで畳み込み

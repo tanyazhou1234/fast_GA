@@ -1,41 +1,41 @@
 function semisin = hyouka_zone(min_fs,max_fs)
 #評価点配置正方型、マップを出力するプログラムのxy座標を指定したもの
 
-mkdir("sound");
+mkdir("/dev/shm/sound");
 #音声ファイル読み込み
 #tic()
 #printf("hyouka: reading sound(form 32 loudspeakers): ")
-fname=sprintf("L_sound/sound1.raw");
+fname=sprintf("/dev/shm/L_sound/sound1.raw");
 fpi1=fopen(fname,'r');
-fname=sprintf("L_sound/sound2.raw");
+fname=sprintf("/dev/shm/L_sound/sound2.raw");
 fpi2=fopen(fname,'r');
-fname=sprintf("L_sound/sound3.raw");
+fname=sprintf("/dev/shm/L_sound/sound3.raw");
 fpi3=fopen(fname,'r');
-fname=sprintf("L_sound/sound4.raw");
+fname=sprintf("/dev/shm/L_sound/sound4.raw");
 fpi4=fopen(fname,'r');
-fname=sprintf("L_sound/sound5.raw");
+fname=sprintf("/dev/shm/L_sound/sound5.raw");
 fpi5=fopen(fname,'r');
-fname=sprintf("L_sound/sound6.raw");
+fname=sprintf("/dev/shm/L_sound/sound6.raw");
 fpi6=fopen(fname,'r');
-fname=sprintf("L_sound/sound7.raw");
+fname=sprintf("/dev/shm/L_sound/sound7.raw");
 fpi7=fopen(fname,'r');
-fname=sprintf("L_sound/sound8.raw");
+fname=sprintf("/dev/shm/L_sound/sound8.raw");
 fpi8=fopen(fname,'r');
-fname=sprintf("L_sound/sound9.raw");
+fname=sprintf("/dev/shm/L_sound/sound9.raw");
 fpi9=fopen(fname,'r');
-fname=sprintf("L_sound/sound10.raw");
+fname=sprintf("/dev/shm/L_sound/sound10.raw");
 fpi10=fopen(fname,'r');
-fname=sprintf("L_sound/sound11.raw");
+fname=sprintf("/dev/shm/L_sound/sound11.raw");
 fpi11=fopen(fname,'r');
-fname=sprintf("L_sound/sound12.raw");
+fname=sprintf("/dev/shm/L_sound/sound12.raw");
 fpi12=fopen(fname,'r');
-fname=sprintf("L_sound/sound13.raw");
+fname=sprintf("/dev/shm/L_sound/sound13.raw");
 fpi13=fopen(fname,'r');
-fname=sprintf("L_sound/sound14.raw");
+fname=sprintf("/dev/shm/L_sound/sound14.raw");
 fpi14=fopen(fname,'r');
-fname=sprintf("L_sound/sound15.raw");
+fname=sprintf("/dev/shm/L_sound/sound15.raw");
 fpi15=fopen(fname,'r');
-fname=sprintf("L_sound/sound16.raw");
+fname=sprintf("/dev/shm/L_sound/sound16.raw");
 fpi16=fopen(fname,'r');
 #toc()
 #printf("\n");
@@ -335,7 +335,7 @@ jj=1:L;
 
 	yout=zeros(1,L);
 
-	fname=sprintf("sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
+	fname=sprintf("/dev/shm/sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
 	fpo=fopen(fname,'w');
 
 	signal1=fread(fpi1,inf,'short');
@@ -625,7 +625,7 @@ jj=1:L;
 
 	yout=zeros(1,L);
 
-	fname=sprintf("sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
+	fname=sprintf("/dev/shm/sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
 	fpo=fopen(fname,'w');
 
 	signal1=fread(fpi1,inf,'short');
@@ -724,7 +724,7 @@ for ii=1:num_1
 	xx=e_point_1(ii,1);
 	yy=e_point_1(ii,2);
 
-	fname=sprintf("sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
+	fname=sprintf("/dev/shm/sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
 	fpi2=fopen(fname,'r');
 	signal2=fread(fpi2,inf,'short');
 	xbuf = double(signal2);
@@ -742,7 +742,7 @@ for jj=1:num_0
 	xx=e_point_0(jj,1);
 	yy=e_point_0(jj,2);
 
-	fname=sprintf("sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
+	fname=sprintf("/dev/shm/sound/out_%d_%d.p341",int32(xx*1000),int32(yy*1000));
 	fpi2=fopen(fname,'r');
 	signal2=fread(fpi2,inf,'short');
 	xbuf = double(signal2);
